@@ -15,9 +15,11 @@
 <p>Si no se abre solo, <a id="go" href="#">entrá acá</a>.</p>
 <script>
   // Datasette Lite corre en el navegador y carga la base y los metadatos publicados junto a esta página.
+  // El parámetro v evita que la caché de GitHub Pages sirva una base y metadatos de versiones distintas.
   const base = new URL('.', location.href).href;
-  const target = 'https://lite.datasette.io/?url=' + encodeURIComponent(base + 'aportantes.db') +
-    '&metadata=' + encodeURIComponent(base + 'metadata.json') + '#/aportantes/buscar';
+  const v = '?v=' + Date.now();
+  const target = 'https://lite.datasette.io/?url=' + encodeURIComponent(base + 'aportantes.db' + v) +
+    '&metadata=' + encodeURIComponent(base + 'metadata.json' + v) + '#/aportantes/buscar';
   document.getElementById('go').href = target;
   location.replace(target);
 </script>

@@ -1,0 +1,377 @@
+<title>Aportantes Electorales Uruguay</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: banda celeste con el buscador arriba, resumen en una fila, tabla de aportes debajo; todo en una columna de hasta 1180px. */
+:root {
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --ink: #142233;
+  --muted: #5b6b7d;
+  --line: #d9e1ea;
+  --celeste: #0a6fb3;
+  --celeste-soft: #e3f0fa;
+  --band: #0b3a5c;
+  --band-ink: #f2f7fb;
+  --sol: #e9a91c;
+  --sol-soft: #fdf3dc;
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1620; --surface: #142130; --ink: #e4ecf4; --muted: #93a5b8; --line: #263749;
+    --celeste: #5fb4ec; --celeste-soft: #16324a; --band: #071a2a; --band-ink: #e4ecf4;
+    --sol: #f2bd4b; --sol-soft: #3a2f14; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1620; --surface: #142130; --ink: #e4ecf4; --muted: #93a5b8; --line: #263749;
+  --celeste: #5fb4ec; --celeste-soft: #16324a; --band: #071a2a; --band-ink: #e4ecf4;
+  --sol: #f2bd4b; --sol-soft: #3a2f14; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Banda superior */
+.band { background: var(--band); color: var(--band-ink); }
+.band .wrap { padding-block: 28px 26px; display: grid; gap: 18px; }
+.kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--sol); }
+h1 { font-family: var(--display); font-stretch: 112%; font-weight: 800; font-size: clamp(28px, 4.6vw, 44px); line-height: 1.05; margin: 0; text-wrap: balance; }
+.lede { margin: 0; max-width: 68ch; color: color-mix(in srgb, var(--band-ink) 82%, transparent); }
+.searchrow { display: flex; gap: 10px; flex-wrap: wrap; }
+.search { flex: 1 1 320px; min-width: 0; position: relative; }
+.search input { width: 100%; font: 500 17px/1.2 var(--body); padding: 14px 16px 14px 44px; border-radius: 10px; border: 2px solid transparent; background: var(--surface); color: var(--ink); }
+.search input:focus { outline: none; border-color: var(--sol); }
+.search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+.examples { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; color: color-mix(in srgb, var(--band-ink) 70%, transparent); }
+.examples button { font: 500 13px var(--body); color: var(--band-ink); background: color-mix(in srgb, var(--band-ink) 12%, transparent); border: 0; border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.examples button:hover, .examples button:focus-visible { background: var(--sol); color: #1d1503; outline: none; }
+
+/* Filtros */
+.filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; padding-block: 18px 6px; }
+.filters label { display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .03em; text-transform: uppercase; }
+.filters select, .filters input { font: 400 14px var(--body); text-transform: none; letter-spacing: 0; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 0; width: 100%; }
+.filters select:focus-visible, .filters input:focus-visible { outline: 2px solid var(--celeste); outline-offset: 1px; }
+.toggles { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; padding-block: 6px 4px; font-size: 14px; }
+.toggles label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.toggles input { accent-color: var(--celeste); width: 16px; height: 16px; }
+.reset { margin-left: auto; font: 600 13px var(--body); color: var(--celeste); background: none; border: 0; cursor: pointer; padding: 4px 0; }
+.reset:focus-visible { outline: 2px solid var(--celeste); }
+
+/* Resumen */
+.summary { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 16px; padding-block: 16px; }
+@media (max-width: 760px) { .summary { grid-template-columns: minmax(0, 1fr); } }
+.totals { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; align-content: start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.stat .k { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.stat .v { font-family: var(--display); font-stretch: 100%; font-weight: 700; font-size: clamp(22px, 3vw, 30px); line-height: 1.1; }
+.stat .v small { font-size: 14px; font-weight: 600; color: var(--muted); margin-right: 3px; }
+.stat.wide { grid-column: 1 / -1; }
+.stat.wide .v { font-size: 15px; font-family: var(--body); font-weight: 500; line-height: 1.4; }
+.bars { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; display: grid; gap: 8px; align-content: start; }
+.bars h2 { margin: 0 0 4px; font: 600 12px var(--body); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.bar { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: 13px; background: none; border: 0; padding: 0; color: var(--ink); text-align: left; cursor: pointer; font-family: var(--body); }
+.bar:focus-visible { outline: 2px solid var(--celeste); outline-offset: 2px; }
+.bar .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .track { height: 10px; background: var(--celeste-soft); border-radius: 3px; overflow: hidden; }
+.bar .fill { display: block; height: 100%; background: var(--celeste); border-radius: 3px; }
+.bar .amt { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.bar:hover .fill { background: var(--sol); }
+
+/* Tabla */
+.tablehead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; padding-block: 8px; }
+.tablehead h2 { margin: 0; font-family: var(--display); font-stretch: 105%; font-weight: 700; font-size: 20px; }
+.sort { font-size: 13px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
+.sort select { font: 500 13px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
+.tablebox { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font: 600 11px var(--body); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 10px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+td.date { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+td.who { min-width: 16rem; }
+.who .name { font-weight: 600; }
+.who .desc { color: var(--muted); font-size: 13px; }
+td.amt { text-align: right; font-family: var(--mono); font-size: 13px; white-space: nowrap; font-weight: 500; }
+td.list { min-width: 14rem; font-size: 13px; }
+.list .party { font-weight: 600; }
+.list .meta { color: var(--muted); }
+.list a { color: var(--celeste); font-size: 12px; text-decoration: none; white-space: nowrap; }
+.list a:hover, .list a:focus-visible { text-decoration: underline; }
+.tag { display: inline-block; font: 600 11px var(--body); padding: 2px 8px; border-radius: 999px; background: var(--celeste-soft); color: var(--celeste); white-space: nowrap; }
+.tag.c-anon { background: var(--sol-soft); color: color-mix(in srgb, var(--sol) 70%, var(--ink)); }
+mark { background: var(--sol-soft); color: inherit; border-radius: 2px; padding: 0 1px; box-shadow: inset 0 -2px 0 var(--sol); }
+.more { display: flex; justify-content: center; padding-block: 16px 8px; }
+.more button { font: 600 14px var(--body); color: var(--surface); background: var(--celeste); border: 0; border-radius: 8px; padding: 10px 20px; cursor: pointer; }
+.more button:focus-visible { outline: 2px solid var(--sol); outline-offset: 2px; }
+.empty { padding: 28px 18px; text-align: center; color: var(--muted); }
+
+/* Notas */
+.notes { padding-block: 28px 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px 32px; font-size: 13.5px; color: var(--muted); }
+.notes h3 { margin: 0 0 6px; font: 700 13px var(--body); color: var(--ink); text-transform: uppercase; letter-spacing: .04em; }
+.notes p, .notes ul { margin: 0; }
+.notes ul { padding-left: 18px; display: grid; gap: 4px; }
+.notes a { color: var(--celeste); }
+
+@media (max-width: 640px) {
+  thead { display: none; }
+  table, tbody, tr, td { display: block; width: 100%; }
+  tr { padding: 12px 14px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; }
+  td { border: 0; padding: 0; min-width: 0 !important; }
+  td.who { grid-column: 1 / -1; order: 1; }
+  td.amt { order: 2; grid-column: 2; grid-row: 1; }
+  td.date { order: 0; grid-row: 1; }
+  td.concept { order: 3; grid-column: 1 / -1; }
+  td.list { order: 4; grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: no-preference) { .fill { transition: width .25s ease; } }
+</style>
+
+<header class="band">
+  <div class="wrap">
+    <div class="kicker">Ley 18.485 · Rendiciones de cuenta ante la Corte Electoral</div>
+    <h1>¿Quién financió cada campaña?</h1>
+    <p class="lede">Buscá por nombre de aportante, empresa, candidato, partido o número de hoja. Incluye los ingresos privados declarados en las rendiciones de las Elecciones Nacionales 2019 y 2024: presidenciales, Senado y Diputados.</p>
+    <div class="searchrow">
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="q" type="search" placeholder="Ej.: Sartori, S.A., rifa, hoja 609…" autocomplete="off" aria-label="Buscar aportantes">
+      </div>
+    </div>
+    <div class="examples" id="examples">Probá:
+      <button type="button" data-q="sartori">Sartori</button>
+      <button type="button" data-q="s.a.">S.A.</button>
+      <button type="button" data-q="cena">Cena</button>
+      <button type="button" data-q="hoja 609">Hoja 609</button>
+      <button type="button" data-q="exterior">Exterior</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="filters" aria-label="Filtros">
+    <label>Elección<select id="f-y"><option value="">Todas</option></select></label>
+    <label>Cargo<select id="f-c"><option value="">Todos</option></select></label>
+    <label>Partido<select id="f-p"><option value="">Todos</option></select></label>
+    <label>Departamento<select id="f-d"><option value="">Todos</option></select></label>
+    <label>Tipo de ingreso<select id="f-k"><option value="">Todos</option></select></label>
+    <label>Monto mínimo ($U)<input id="f-m" type="number" min="0" step="1000" inputmode="numeric" placeholder="0"></label>
+  </section>
+  <div class="toggles">
+    <label><input type="checkbox" id="f-e"> Solo empresas (S.A., S.R.L., Ltda.)</label>
+    <label><input type="checkbox" id="f-x" checked> Ocultar cesiones y transferencias internas</label>
+    <button type="button" class="reset" id="reset">Limpiar filtros</button>
+  </div>
+
+  <section class="summary" aria-live="polite">
+    <div class="totals">
+      <div class="stat"><div class="k">Aportes encontrados</div><div class="v num" id="s-n">–</div></div>
+      <div class="stat"><div class="k">Monto total</div><div class="v num" id="s-t">–</div></div>
+      <div class="stat"><div class="k">Rendiciones</div><div class="v num" id="s-l">–</div></div>
+      <div class="stat"><div class="k">Aporte mediano</div><div class="v num" id="s-m">–</div></div>
+      <div class="stat wide"><div class="k">Mayor aporte</div><div class="v" id="s-top">–</div></div>
+    </div>
+    <div class="bars" id="bars"><h2>Monto por partido</h2></div>
+  </section>
+
+  <div class="tablehead">
+    <h2 id="t-title">Aportes</h2>
+    <label class="sort">Ordenar por
+      <select id="sort">
+        <option value="m">Monto (mayor primero)</option>
+        <option value="f">Fecha (más reciente)</option>
+        <option value="a">Aportante (A–Z)</option>
+      </select>
+    </label>
+  </div>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Fecha</th><th>Aportante y detalle</th><th>Tipo</th><th style="text-align:right">Monto</th><th>Rendición</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <div class="more"><button type="button" id="more" hidden>Mostrar más</button></div>
+
+  <section class="notes">
+    <div>
+      <h3>De dónde salen los datos</h3>
+      <p>Planillas de rendición de cuentas publicadas por la Corte Electoral para las <a href="https://www.gub.uy/corte-electoral/comunicacion/publicaciones/rendiciones-cuenta-elecciones-nacionales-2024" target="_blank" rel="noopener">Elecciones Nacionales 2024</a> y <a href="https://www.gub.uy/corte-electoral/comunicacion/publicaciones/rendiciones-cuenta-elecciones-nacionales-2019-departamentales-2020" target="_blank" rel="noopener">2019</a>. Cada fila enlaza a la planilla original. Se muestran solo ingresos privados: se excluye la contribución estatal por voto válido. Datos procesados el <span id="gen"></span>.</p>
+    </div>
+    <div>
+      <h3>Cómo leerlos</h3>
+      <ul>
+        <li>Los textos son los que cargó cada comando de campaña, sin corregir. Un mismo aportante puede aparecer escrito de varias formas.</li>
+        <li>Los montos están en pesos uruguayos, tal como fueron declarados.</li>
+        <li>Muchas listas registran como ingreso la cesión de créditos de otros candidatos o del partido. Usá “Ocultar cesiones” para quedarte con aportes de terceros.</li>
+        <li>Los números de cédula que aparecían en algunas descripciones se ocultaron.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Qué falta</h3>
+      <ul>
+        <li>Departamentales y Municipales 2025: el visor de la Corte exige captcha por descarga.</li>
+        <li>Departamentales 2015 y 2020, Nacionales 2014: los buscadores originales ya no están en línea.</li>
+        <li>Balotajes: solo existen como PDF escaneado.</li>
+        <li>Rendiciones que no se presentaron o con archivo ilegible (2 en 2019).</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById('data').textContent);
+  const L = D.lists, R = D.rows;
+  const $ = id => document.getElementById(id);
+  const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const fmt = new Intl.NumberFormat('es-UY', { maximumFractionDigits: 0 });
+  const money = n => fmt.format(Math.round(n));
+  const short = n => n >= 1e6 ? (n / 1e6).toLocaleString('es-UY', { maximumFractionDigits: 1 }) + ' M' : n >= 1e3 ? Math.round(n / 1e3).toLocaleString('es-UY') + ' mil' : money(n);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const COMPANY = /\b(s\.?\s?a\.?|s\.?\s?r\.?\s?l\.?|ltda\.?|sociedad an[oó]nima|cooperativa)(\s|$|[,.)])/i;
+  const INTERNAL = /cesi[oó]n|transferencia|traspaso|saldo inicial|adelanto|pr[eé]stamo|cr[eé]dito (del|de la)|diferencia de cambio|intereses/i;
+
+  // Índice de búsqueda por fila
+  const idx = R.map(r => {
+    const l = L[r[0]];
+    return norm([r[3], r[4], l[5], l[2], 'hoja ' + l[3], l[4], l[1], r[2]].join(' | '));
+  });
+  const isCo = R.map(r => COMPANY.test(r[3] + ' ' + r[4]));
+  const isInt = R.map(r => INTERNAL.test(r[4] + ' ' + r[3]));
+
+  // Opciones de filtros
+  function fill(sel, values) {
+    for (const v of values) { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); }
+  }
+  const uniq = (f) => [...new Set(f)].filter(Boolean).sort((a, b) => a.localeCompare(b, 'es'));
+  fill($('f-y'), uniq(L.map(l => String(l[0]))).reverse());
+  fill($('f-c'), ['Presidencia', 'Senado', 'Diputados']);
+  fill($('f-p'), uniq(L.map(l => l[2])));
+  fill($('f-d'), uniq(L.map(l => l[4])).filter(d => d.length > 2));
+  fill($('f-k'), uniq(R.map(r => r[2])));
+  $('gen').textContent = new Date(D.generated + 'T12:00').toLocaleDateString('es-UY', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  let result = [], shown = 0, terms = [];
+  const PAGE = 60;
+
+  function hl(text) {
+    let t = esc(text);
+    if (!terms.length) return t;
+    // Resalta coincidencias ignorando tildes
+    const n = norm(text);
+    const marks = [];
+    for (const term of terms) { let i = n.indexOf(term); while (i >= 0) { marks.push([i, i + term.length]); i = n.indexOf(term, i + term.length); } }
+    if (!marks.length) return t;
+    marks.sort((a, b) => a[0] - b[0]);
+    let out = '', pos = 0;
+    for (const [a, b] of marks) { if (a < pos) continue; out += esc(text.slice(pos, a)) + '<mark>' + esc(text.slice(a, b)) + '</mark>'; pos = b; }
+    return out + esc(text.slice(pos));
+  }
+
+  function run() {
+    const q = norm($('q').value.trim());
+    terms = q.split(/\s+/).filter(t => t.length > 0);
+    const fy = $('f-y').value, fc = $('f-c').value, fp = $('f-p').value, fd = $('f-d').value, fk = $('f-k').value;
+    const fm = parseFloat($('f-m').value) || 0, fe = $('f-e').checked, fx = $('f-x').checked;
+    result = [];
+    for (let i = 0; i < R.length; i++) {
+      const r = R[i], l = L[r[0]];
+      if (fy && String(l[0]) !== fy) continue;
+      if (fc && l[1] !== fc) continue;
+      if (fp && l[2] !== fp) continue;
+      if (fd && l[4] !== fd) continue;
+      if (fk && r[2] !== fk) continue;
+      if (r[5] < fm) continue;
+      if (fe && !isCo[i]) continue;
+      if (fx && isInt[i]) continue;
+      let ok = true;
+      for (const t of terms) if (idx[i].indexOf(t) < 0) { ok = false; break; }
+      if (ok) result.push(i);
+    }
+    const s = $('sort').value;
+    if (s === 'm') result.sort((a, b) => R[b][5] - R[a][5]);
+    else if (s === 'f') result.sort((a, b) => (R[b][1] || '').localeCompare(R[a][1] || ''));
+    else result.sort((a, b) => (R[a][3] || R[a][4]).localeCompare(R[b][3] || R[b][4], 'es'));
+    summary();
+    $('rows').innerHTML = '';
+    shown = 0;
+    page();
+  }
+
+  function summary() {
+    let tot = 0; const lists = new Set(), byP = new Map(), amts = [];
+    let top = -1;
+    for (const i of result) {
+      const r = R[i]; tot += r[5]; amts.push(r[5]); lists.add(r[0]);
+      const p = L[r[0]][2]; byP.set(p, (byP.get(p) || 0) + r[5]);
+      if (top < 0 || r[5] > R[top][5]) top = i;
+    }
+    amts.sort((a, b) => a - b);
+    const med = amts.length ? amts[Math.floor(amts.length / 2)] : 0;
+    $('s-n').textContent = money(result.length);
+    $('s-t').innerHTML = '<small>$U</small>' + short(tot);
+    $('s-l').textContent = money(lists.size);
+    $('s-m').innerHTML = amts.length ? '<small>$U</small>' + money(med) : '–';
+    if (top >= 0) {
+      const r = R[top], l = L[r[0]];
+      $('s-top').innerHTML = '<strong>$U ' + money(r[5]) + '</strong> · ' + esc(r[3] || r[4] || 'Sin identificar') + ' <span style="color:var(--muted)">→ ' + esc(l[2]) + ', ' + esc(l[1]) + ' ' + l[0] + '</span>';
+    } else $('s-top').textContent = '–';
+    const box = $('bars');
+    box.innerHTML = '<h2>Monto por partido</h2>';
+    const arr = [...byP.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8);
+    const max = arr.length ? arr[0][1] : 1;
+    for (const [p, v] of arr) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'bar';
+      b.title = 'Filtrar por ' + p;
+      b.innerHTML = '<span class="name">' + esc(p) + '</span><span class="track"><span class="fill" style="width:' + Math.max(1, v / max * 100).toFixed(1) + '%"></span></span><span class="amt num">$U ' + short(v) + '</span>';
+      b.addEventListener('click', () => { $('f-p').value = $('f-p').value === p ? '' : p; run(); });
+      box.appendChild(b);
+    }
+    if (!arr.length) box.insertAdjacentHTML('beforeend', '<div class="empty">Sin resultados</div>');
+    $('t-title').textContent = terms.length ? 'Resultados para “' + $('q').value.trim() + '”' : 'Aportes';
+  }
+
+  function page() {
+    const tb = $('rows');
+    if (!result.length) { tb.innerHTML = '<tr><td colspan="5" class="empty">No hay aportes que coincidan. Probá con menos palabras o quitá algún filtro.</td></tr>'; $('more').hidden = true; return; }
+    const frag = [];
+    const end = Math.min(result.length, shown + PAGE);
+    for (let k = shown; k < end; k++) {
+      const r = R[result[k]], l = L[r[0]];
+      const name = r[3] || (r[2] === 'Donaciones anónimas' ? 'Anónimo' : '');
+      const desc = r[4] && r[4] !== r[3] ? r[4] : '';
+      const meta = [l[1] + ' ' + l[0], l[3] ? 'Hoja ' + l[3] : '', l[4]].filter(Boolean).join(' · ');
+      frag.push('<tr>' +
+        '<td class="date">' + (r[1] ? r[1].split('-').reverse().join('/') : 's/f') + '</td>' +
+        '<td class="who">' + (name ? '<div class="name">' + hl(name) + '</div>' : '') + (desc ? '<div class="desc">' + hl(desc) + '</div>' : '') + (!name && !desc ? '<div class="desc">Sin detalle</div>' : '') + '</td>' +
+        '<td class="concept"><span class="tag' + (r[2] === 'Donaciones anónimas' ? ' c-anon' : '') + '">' + esc(r[2]) + '</span></td>' +
+        '<td class="amt num">$U ' + money(r[5]) + '</td>' +
+        '<td class="list"><div class="party">' + hl(l[2]) + '</div><div class="meta">' + hl(meta) + '</div>' + (l[5] ? '<div class="meta">' + hl(l[5]) + '</div>' : '') + '<a href="' + esc(l[6]) + '" target="_blank" rel="noopener">Planilla original ↗</a></td>' +
+        '</tr>');
+    }
+    tb.insertAdjacentHTML('beforeend', frag.join(''));
+    shown = end;
+    const rest = result.length - shown;
+    $('more').hidden = rest <= 0;
+    $('more').textContent = 'Mostrar ' + Math.min(PAGE, rest) + ' más (quedan ' + money(rest) + ')';
+  }
+
+  let t;
+  $('q').addEventListener('input', () => { clearTimeout(t); t = setTimeout(run, 140); });
+  for (const id of ['f-y', 'f-c', 'f-p', 'f-d', 'f-k', 'f-e', 'f-x', 'sort']) $(id).addEventListener('change', run);
+  $('f-m').addEventListener('input', () => { clearTimeout(t); t = setTimeout(run, 200); });
+  $('more').addEventListener('click', page);
+  $('examples').addEventListener('click', e => { const q = e.target.dataset && e.target.dataset.q; if (q) { $('q').value = q; run(); } });
+  $('reset').addEventListener('click', () => {
+    $('q').value = ''; for (const id of ['f-y', 'f-c', 'f-p', 'f-d', 'f-k']) $(id).value = ''; $('f-m').value = ''; $('f-e').checked = false; $('f-x').checked = true; run();
+  });
+  run();
+})();
+</script>

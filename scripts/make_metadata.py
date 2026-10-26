@@ -1,5 +1,5 @@
 # Genera metadata.json para Datasette (títulos, filtros y consultas guardadas).
-# Uso: python scripts/make_metadata.py site/simplify.sql site/metadata.json
+# Uso: python scripts/make_metadata.py docs/simplify.sql docs/metadata.json
 import json, sys
 
 simplify_sql = open(sys.argv[1]).read()
@@ -47,6 +47,7 @@ meta = {
                     "facets": ["eleccion", "cargo", "partido", "departamento"],
                 },
                 "aportes_fts": {"hidden": True},
+                "reglas_busqueda": {"hidden": True},
             },
             "queries": {
                 "buscar": {

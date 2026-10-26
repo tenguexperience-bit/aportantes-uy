@@ -30,9 +30,11 @@ def simplify(s):
     return s
 
 def sql_simplify(expr):
-    for a, b in RULES:
-        expr = "replace(%s, '%s', '%s')" % (expr, a.replace("'", "''"), b.replace("'", "''"))
-    return expr
+    # Aplica las reglas de la tabla reglas_busqueda una por una con un CTE recursivo.
+    # Anidar un replace() por regla desborda el parser del SQLite que usa Datasette Lite.
+    return ("(with recursive s(i, t) as (select 0, %s union all "
+            "select s.i + 1, replace(s.t, r.de, r.a) from s join reglas_busqueda r on r.orden = s.i + 1) "
+            "select t from s order by i desc limit 1)" % expr)
 
 def mask(s):
     return CI.sub("CI ***", s or "")
@@ -73,9 +75,11 @@ db.executescript("""
 CREATE VIRTUAL TABLE aportes_fts USING fts5(aportante, detalle, candidatos, partido, content='aportes', content_rowid='id',
   tokenize='unicode61 remove_diacritics 2');
 INSERT INTO aportes_fts(rowid, aportante, detalle, candidatos, partido) SELECT id, aportante, detalle, candidatos, partido FROM aportes;
+CREATE TABLE reglas_busqueda (orden INTEGER PRIMARY KEY, de TEXT, a TEXT);
 CREATE INDEX idx_aportes_monto ON aportes(monto);
 CREATE INDEX idx_aportes_partido ON aportes(partido);
 """)
+db.executemany("INSERT INTO reglas_busqueda VALUES (?,?,?)", [(i + 1, a, b) for i, (a, b) in enumerate(RULES)])
 db.commit()
 db.execute("VACUUM")
 print("aportes", db.execute("select count(*) from aportes").fetchone()[0],

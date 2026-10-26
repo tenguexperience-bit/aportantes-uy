@@ -46,6 +46,9 @@
         },
         "aportes_fts": {
           "hidden": true
+        },
+        "reglas_busqueda": {
+          "hidden": true
         }
       },
       "queries": {
@@ -53,13 +56,13 @@
           "title": "Buscar aportes (tolera errores de tipeo)",
           "hide_sql": true,
           "description": "Escribí un nombre, empresa, candidato, partido o «hoja 609». Ignora tildes y confusiones v/b, s/z/c, ll/y, h.",
-          "sql": "select fecha, aportante, detalle, tipo, monto, eleccion, cargo, partido, hoja, departamento, candidatos, planilla from aportes where texto_simplificado like '%' || replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(lower(:texto), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u'), 'ü', 'u'), 'à', 'a'), 'è', 'e'), 'ì', 'i'), 'ò', 'o'), 'ù', 'u'), 'Á', 'a'), 'É', 'e'), 'Í', 'i'), 'Ó', 'o'), 'Ú', 'u'), 'Ü', 'u'), 'Ñ', 'ñ'), 'ch', '#'), 'h', ''), '#', 'ch'), 'll', 'y'), 'v', 'b'), 'w', 'u'), 'z', 's'), 'ce', 'se'), 'ci', 'si'), 'ge', 'je'), 'gi', 'ji'), 'qu', 'k'), 'ca', 'ka'), 'co', 'ko'), 'cu', 'ku'), 'x', 'ks'), 'bb', 'b'), 'ss', 's'), 'rr', 'r'), 'nn', 'n'), 'tt', 't'), 'll', 'y'), 'cc', 'ks'), '.', ''), ',', ' '), '  ', ' ') || '%' order by monto desc"
+          "sql": "select fecha, aportante, detalle, tipo, monto, eleccion, cargo, partido, hoja, departamento, candidatos, planilla from aportes where texto_simplificado like '%' || (with recursive s(i, t) as (select 0, lower(:texto) union all select s.i + 1, replace(s.t, r.de, r.a) from s join reglas_busqueda r on r.orden = s.i + 1) select t from s order by i desc limit 1) || '%' order by monto desc"
         },
         "totales_por_aportante": {
           "title": "Totales por aportante",
           "hide_sql": true,
           "description": "Agrupa los aportes que coinciden con el texto por nombre declarado (sin unificar variantes de escritura).",
-          "sql": "select coalesce(aportante, detalle) as aportante_declarado, count(*) as aportes, sum(monto) as total, group_concat(distinct partido) as partidos, group_concat(distinct eleccion) as elecciones from aportes where texto_simplificado like '%' || replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(lower(:texto), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u'), 'ü', 'u'), 'à', 'a'), 'è', 'e'), 'ì', 'i'), 'ò', 'o'), 'ù', 'u'), 'Á', 'a'), 'É', 'e'), 'Í', 'i'), 'Ó', 'o'), 'Ú', 'u'), 'Ü', 'u'), 'Ñ', 'ñ'), 'ch', '#'), 'h', ''), '#', 'ch'), 'll', 'y'), 'v', 'b'), 'w', 'u'), 'z', 's'), 'ce', 'se'), 'ci', 'si'), 'ge', 'je'), 'gi', 'ji'), 'qu', 'k'), 'ca', 'ka'), 'co', 'ko'), 'cu', 'ku'), 'x', 'ks'), 'bb', 'b'), 'ss', 's'), 'rr', 'r'), 'nn', 'n'), 'tt', 't'), 'll', 'y'), 'cc', 'ks'), '.', ''), ',', ' '), '  ', ' ') || '%' group by lower(coalesce(aportante, detalle)) order by total desc"
+          "sql": "select coalesce(aportante, detalle) as aportante_declarado, count(*) as aportes, sum(monto) as total, group_concat(distinct partido) as partidos, group_concat(distinct eleccion) as elecciones from aportes where texto_simplificado like '%' || (with recursive s(i, t) as (select 0, lower(:texto) union all select s.i + 1, replace(s.t, r.de, r.a) from s join reglas_busqueda r on r.orden = s.i + 1) select t from s order by i desc limit 1) || '%' group by lower(coalesce(aportante, detalle)) order by total desc"
         },
         "totales_por_partido": {
           "title": "Totales por partido y elección",

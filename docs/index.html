@@ -14,11 +14,12 @@
 <p>Abriendo el buscador… La primera carga tarda unos segundos porque la base se descarga a tu navegador.</p>
 <p>Si no se abre solo, <a id="go" href="#">entrá acá</a>.</p>
 <script>
-  // Datasette Lite corre en el navegador y carga la base y los metadatos publicados junto a esta página.
+  // Datasette Lite (copia propia en lite/, con versiones fijas) corre en el navegador y carga
+  // la base y los metadatos publicados junto a esta página.
   // El parámetro v evita que la caché de GitHub Pages sirva una base y metadatos de versiones distintas.
   const base = new URL('.', location.href).href;
   const v = '?v=' + Date.now();
-  const target = 'https://lite.datasette.io/?url=' + encodeURIComponent(base + 'aportantes.db' + v) +
+  const target = base + 'lite/?url=' + encodeURIComponent(base + 'aportantes.db' + v) +
     '&metadata=' + encodeURIComponent(base + 'metadata.json' + v) + '#/aportantes/buscar';
   document.getElementById('go').href = target;
   location.replace(target);
